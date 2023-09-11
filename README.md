@@ -60,5 +60,33 @@ SplitFldError:
 Exit Sub
 HdgsError:
 Exit Sub
+
+
+Sub AverageColumnsBelowLastRow()
+   Dim LastRow As Long
+   Dim LastCol As Long
+   Dim TargetRow As Long
+   Dim TargetRowplus1 As Long
+   Dim TotalRows As Long
+ 
+   ' Find the last row in the active sheet
+   LastRow = Cells(Rows.Count, 1).End(xlUp).Row
+ 
+   ' Find the last column in the active sheet
+   LastCol = Cells(LastRow, Columns.Count).End(xlToLeft).Column
+ 
+   ' Calculate the average for each column and place it in the row below the last row
+   TargetRow = LastRow + 1 ' Row just below the last row
+   TargetRowplus1 = LastRow + 2 ' 2 rows just below the last row
+   TotalRows = LastRow - 1
+   
+ 
+   For i = 7 To 35
+        Cells(TargetRow, i).Formula = "=COUNTIF(" & Cells(2, i).Address & ":" & Cells(LastRow, i).Address & ",""Yes"") + COUNTIF(" & Cells(2, i).Address & ":" & Cells(LastRow, i).Address & ",""NA"")"
+   Next i
+   For i = 7 To 35
+        Cells(TargetRowplus1, i).Value = Cells(TargetRow, i).Value / TotalRows
+   Next i
+End Sub
     
 End Sub
